@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قەرز باشقۇرۇش سىستېمىسى</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --border: #e2e8f0;
+    }
+
+    body.dark {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: .3s;
+    }
+
+    .app {
+      max-width: 1000px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    h1 { margin: 0; font-size: 24px; }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-size: 15px;
+      color: white;
+      background: var(--primary);
+    }
+
+    button:active { transform: scale(.97); }
+
+    /* DASHBOARD */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .stat b { font-size: 21px; }
+
+    /* FORM */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* SEARCH */
+    .filters {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    /* DEBT LIST */
+    .debt-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .debt {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-right: 5px solid var(--danger);
+      border-radius: 16px;
+      padding: 15px;
+    }
+
+    .debt.paid {
+      border-right-color: var(--success);
+    }
+
+    .debt-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .debt h3 { margin: 0; }
+
+    .amount {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .info {
+      color: var(--muted);
+      margin: 10px 0;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .unpaid-badge {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .paid-badge {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .actions button, .actions a {
+      padding: 9px 11px;
+      border-radius: 9px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .success { background: var(--success); }
+    .danger { background: var(--danger); }
+    .telegram { background: #229ED9; }
+    .edit { background: #7c3aed; }
+    .secondary { background: #64748b; }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 700px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .filters { grid-template-columns: 1fr; }
+      h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header>
+    <div>
+      <h1>💰 قەرز باشقۇرۇش</h1>
+      <small id="dateText"></small>
+    </div>
+    <button onclick="toggleDark()">🌙 كۆرۈنۈش</button>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="stats">
+    <div class="stat">
+      <span>💰 جەمئىي قەرز</span>
+      <b id="totalAmount">0</b>
+    </div>
+
+    <div class="stat">
+      <span>❌ قالغان قەرز</span>
+      <b id="remainingAmount">0</b>
+    </div>
+
+    <div class="stat">
+      <span>✅ تۆلەنگەن</span>
+      <b id="paidAmount">0</b>
+    </div>
+
+    <div class="stat">
+      <span>👥 قەرزدار سانى</span>
+      <b id="peopleCount">0</b>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT -->
+  <div class="panel">
+    <h2 id="formTitle">➕ يېڭى قەرز قوشۇش</h2>
+
+    <div class="form-grid">
+      <input id="name" placeholder="👤 قەرزدارنىڭ ئىسمى">
+
+      <input id="telegram" placeholder="📱 Telegram: @username">
+
+      <input id="amount" type="number" step="0.01" placeholder="💰 سومما">
+
+      <select id="currency">
+        <option value="¥">¥ يۈەن</option>
+        <option value="$">$ دوللار</option>
+        <option value="€">€ ياۋرو</option>
+      </select>
+
+      <div>
+        <label>📅 قەرز بېرىلگەن ۋاقىت</label>
+        <input id="startDate" type="date">
+      </div>
+
+      <div>
+        <label>⏰ قايتۇرۇش ۋاقتى</label>
+        <input id="dueDate" type="date">
+      </div>
+
+      <textarea id="note" class="full" placeholder="📝 ئىزاھات"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button onclick="saveDebt()">💾 ساقلاش</button>
+      <button class="secondary" onclick="resetForm()">↩️ بىكار قىلىش</button>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="panel">
+    <div class="filters">
+      <input id="search"
+        placeholder="🔍 ئىسىم ياكى Telegram بىلەن ئىزدەڭ..."
+        oninput="render()">
+
+      <select id="statusFilter" onchange="render()">
+        <option value="all">📋 ھەممىسى</option>
+        <option value="unpaid">❌ تۆلەنمىگەن</option>
+        <option value="paid">✅ تۆلەنگەن</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div id="list" class="debt-list"></div>
+
+</div>
+
+<script>
+
+let debts = JSON.parse(localStorage.getItem("qarz_debts")) || [];
+let editingId = null;
+
+/* DATE */
+document.getElementById("dateText").textContent =
+  new Date().toLocaleDateString();
+
+/* SAVE STORAGE */
+function saveStorage() {
+  localStorage.setItem("qarz_debts", JSON.stringify(debts));
+}
+
+/* SAVE DEBT */
+function saveDebt() {
+
+  const name = document.getElementById("name").value.trim();
+  const telegram = document.getElementById("telegram").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+  const currency = document.getElementById("currency").value;
+  const startDate = document.getElementById("startDate").value;
+  const dueDate = document.getElementById("dueDate").value;
+  const note = document.getElementById("note").value.trim();
+
+  if (!name || !telegram || !amount) {
+    alert("❗ ئىسمى، Telegram ۋە سوممىنى تولدۇرۇڭ!");
+    return;
+  }
+
+  if (editingId) {
+
+    debts = debts.map(d => {
+      if (d.id === editingId) {
+        return {
+          ...d,
+          name,
+          telegram,
+          amount,
+          currency,
+          startDate,
+          dueDate,
+          note
+        };
+      }
+      return d;
+    });
+
+    editingId = null;
+
+  } else {
+
+    debts.push({
+      id: Date.now(),
+      name,
+      telegram,
+      amount,
+      currency,
+      startDate,
+      dueDate,
+      note,
+      paid: false,
+      createdAt: new Date().toISOString()
+    });
+  }
+
+  saveStorage();
+  resetForm();
+  render();
+}
+
+/* EDIT */
+function editDebt(id) {
+
+  const d = debts.find(x => x.id === id);
+  if (!d) return;
+
+  editingId = id;
+
+  document.getElementById("name").value = d.name;
+  document.getElementById("telegram").value = d.telegram;
+  document.getElementById("amount").value = d.amount;
+  document.getElementById("currency").value = d.currency;
+  document.getElementById("startDate").value = d.startDate || "";
+  document.getElementById("dueDate").value = d.dueDate || "";
+  document.getElementById("note").value = d.note || "";
+
+  document.getElementById("formTitle").textContent =
+    "✏️ قەرزنى تەھرىرلەش";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/* RESET */
+function resetForm() {
+
+  editingId = null;
+
+  ["name", "telegram", "amount", "startDate", "dueDate", "note"]
+    .forEach(id => document.getElementById(id).value = "");
+
+  document.getElementById("currency").value = "¥";
+
+  document.getElementById("formTitle").textContent =
+    "➕ يېڭى قەرز قوشۇش";
+}
+
+/* PAID */
+function togglePaid(id) {
+
+  debts = debts.map(d =>
+    d.id === id
+      ? { ...d, paid: !d.paid }
+      : d
+  );
+
+  saveStorage();
+  render();
+}
+
+/* DELETE */
+function deleteDebt(id) {
+
+  if (!confirm("⚠️ بۇ قەرز خاتىرىسىنى ئۆچۈرەمسىز؟")) return;
+
+  debts = debts.filter(d => d.id !== id);
+
+  saveStorage();
+  render();
+}
+
+/* ESCAPE */
+function escapeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = text || "";
+  return div.innerHTML;
+}
+
+/* RENDER */
+function render() {
+
+  const search = document.getElementById("search").value.toLowerCase();
+  const filter = document.getElementById("statusFilter").value;
+
+  let filtered = debts.filter(d => {
+
+    const matchesSearch =
+      d.name.toLowerCase().includes(search) ||
+      d.telegram.toLowerCase().includes(search);
+
+    const matchesStatus =
+      filter === "all" ||
+      (filter === "paid" && d.paid) ||
+      (filter === "unpaid" && !d.paid);
+
+    return matchesSearch && matchesStatus;
+  });
+
+  filtered.sort((a, b) => b.id - a.id);
+
+  const list = document.getElementById("list");
+
+  if (filtered.length === 0) {
+    list.innerHTML =
+      `<div class="panel empty">📭 ھازىرچە قەرز خاتىرىسى يوق</div>`;
+  } else {
+
+    list.innerHTML = filtered.map(d => `
+
+      <div class="debt ${d.paid ? "paid" : ""}">
+
+        <div class="debt-top">
+          <h3>👤 ${escapeHTML(d.name)}</h3>
+
+          <span class="badge ${d.paid ? "paid-badge" : "unpaid-badge"}">
+            ${d.paid ? "✅ تۆلەندى" : "❌ تۆلەنمىدى"}
+          </span>
+        </div>
+
+        <div class="amount">
+          ${d.amount} ${d.currency}
+        </div>
+
+        <div class="info">
+          📱 ${escapeHTML(d.telegram)}<br>
+          📅 بېرىلگەن: ${d.startDate || "-"}<br>
+          ⏰ قايتۇرۇش: ${d.dueDate || "-"}<br>
+          📝 ${escapeHTML(d.note || "-")}
+        </div>
+
+        <div class="actions">
+
+          <a class="telegram"
+             target="_blank"
+             href="https://t.me/${encodeURIComponent(d.telegram.replace("@",""))}">
+             📩 Telegram
+          </a>
+
+          <button class="success"
+            onclick="togglePaid(${d.id})">
+            ${d.paid ? "↩️ قايتۇرۇش" : "✅ تۆلەندى"}
+          </button>
+
+          <button class="edit"
+            onclick="editDebt(${d.id})">
+            ✏️ تەھرىرلەش
+          </button>
+
+          <button class="danger"
+            onclick="deleteDebt(${d.id})">
+            🗑️ ئۆچۈرۈش
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+  }
+
+  updateStats();
+}
+
+/* STATS */
+function updateStats() {
+
+  const total = debts.reduce((sum, d) =>
+    sum + Number(d.amount), 0);
+
+  const remaining = debts
+    .filter(d => !d.paid)
+    .reduce((sum, d) => sum + Number(d.amount), 0);
+
+  const paid = debts
+    .filter(d => d.paid)
+    .reduce((sum, d) => sum + Number(d.amount), 0);
+
+  document.getElementById("totalAmount").textContent = total;
+  document.getElementById("remainingAmount").textContent = remaining;
+  document.getElementById("paidAmount").textContent = paid;
+  document.getElementById("peopleCount").textContent = debts.length;
+}
+
+/* DARK MODE */
+function toggleDark() {
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "qarz_dark",
+    document.body.classList.contains("dark")
+  );
+}
+
+if (localStorage.getItem("qarz_dark") === "true") {
+  document.body.classList.add("dark");
+}
+
+/* START */
+render();
+
+</script>
+
+</body>
+</html>
