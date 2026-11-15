@@ -1,0 +1,9 @@
+{
+  "name": "mlbb-arman",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "formidable": "^3.5.2"
+  }
+}
