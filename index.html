@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="ug">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLBB ARENA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0c1020;color:white;font-family:Arial,sans-serif}
+header{background:#171e35;text-align:center;padding:22px;border-bottom:2px solid #8060ff}
+.logo{font-size:28px;color:#a88aff;font-weight:bold}
+nav{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:15px;max-width:650px;margin:auto}
+button{border:0;border-radius:12px;padding:16px 8px;background:#293552;color:white;font-size:15px;cursor:pointer}
+button:active{background:#7654ff}
+.container{max-width:650px;margin:auto;padding:15px}
+.card{background:#19223a;border:1px solid #354363;border-radius:14px;padding:17px;margin-bottom:14px}
+h2{color:#ae92ff}
+input,select,textarea{width:100%;padding:13px;margin:7px 0 14px;border-radius:9px;border:1px solid #465476;background:#0e162b;color:white;font-size:15px}
+label{color:#d6d8e8}
+.primary{background:#7654ff;width:100%;font-weight:bold}
+.hidden{display:none}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.role-box{background:#26324d;padding:10px;border-radius:10px}
+.role-box label{font-size:14px}
+.role-box input{margin-bottom:0}
+footer{text-align:center;color:#929bb2;padding:25px}
+.small{color:#aab3c9;font-size:13px}
+.account-img{width:100%;max-height:280px;object-fit:contain;background:#0e162b;border-radius:9px;margin-top:8px}
+.delete{background:#c63c4b;width:100%;margin-top:10px}
+.contact{display:block;text-align:center;text-decoration:none;background:#168b65;color:white;padding:13px;border-radius:10px;margin-top:10px}
+.fee{background:#26324d;padding:12px;border-radius:10px;margin:8px 0 14px;color:#ffe09a}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">⚔️ MLBB ARENA</div>
+<p>Mobile Legends Community</p>
+</header>
+
+<nav>
+<button onclick="page('add')">🛒 ھېسابات سېتىش</button>
+<button onclick="page('search')">🔎 ھېسابات ئىزدەش</button>
+<button onclick="page('mine')">📋 مېنىڭ ھېسابلىرىم</button>
+<button onclick="page('notifications')">🔔 ئۇقتۇرۇشلار</button>
+<button onclick="page('create')">🎮 كوماندا يىغىش</button>
+<button onclick="page('teams')">🔥 ئوچۇق كوماندىلار</button>
+<button onclick="page('invite')">👥 دوست تەكلىپ قىلىش</button>
+<button onclick="page('info')">ℹ️ ئۇچۇر</button>
+</nav>
+
+<main>
+
+<section id="home" class="container">
+<div class="card" style="text-align:center">
+<h2>MLBB ARENA</h2>
+<p>ئۆزىڭىزگە ماس ئويۇنچى ۋە كوماندا تېپىڭ!</p>
+<button class="primary" onclick="page('create')">🔥 كوماندا يىغىش</button>
+</div>
+</section>
+
+<section id="add" class="container hidden">
+<div class="card">
+<h2>🛒 ھېسابات سېتىش</h2>
+
+<form id="accountForm">
+
+<label>ھېساباتنىڭ 1-رەسىمى *</label>
+<input type="file" id="photo1" accept="image/*" required>
+
+<label>ھېساباتنىڭ 2-رەسىمى *</label>
+<input type="file" id="photo2" accept="image/*" required>
+
+<label>ھېساباتنىڭ سىن كۆرۈنۈشى (ئىختىيارى)</label>
+<input type="file" id="accountVideo" accept="video/*">
+
+<label>ھېسابات باھاسى *</label>
+<input type="number" id="accountPrice" min="0.01" step="any" placeholder="باھاسىنى كىرگۈزۈڭ" required>
+
+<label>پۇل بىرلىكى</label>
+<select id="currency">
+<option value="USD">دوللار ($)</option>
+<option value="SYP">سۈرىيە لىراسى (SYP)</option>
+</select>
+
+<label>باھادا كېلىشىشكە بولامدۇ؟</label>
+<select id="negotiable">
+<option value="ھەئە">ھەئە</option>
+<option value="ياق">ياق</option>
+</select>
+
+<label>ھېساباتنى ئالماشتۇرۇشقا بولامدۇ؟</label>
+<select id="exchange">
+<option value="ھەئە">ھەئە</option>
+<option value="ياق">ياق</option>
+</select>
+
+<label>قايسى ئۈسكۈنىگە ماس؟</label>
+<select id="device">
+<option value="iPhone">iPhone</option>
+<option value="Android">Android</option>
+<option value="ھەر ئىككىسى">ھەر ئىككىسى</option>
+</select>
+
+<label>Telegram ئىشلەتكۈچى ئىسمىڭىز</label>
+<input type="text" id="telegram" placeholder="@username">
+
+<label>قوشۇمچە ئۇچۇر (ئىختىيارى)</label>
+<textarea id="accountNote" rows="3" placeholder="ھېسابات ھەققىدە ئۇچۇر..."></textarea>
+
+<div class="fee">
+<strong>مۇلازىمەت ھەققى:</strong>
+<p>50$ گىچە = 1.5$</p>
+<p>50$ دىن يۇقىرى، 100$ گىچە = 3$</p>
+<p>100$ دىن يۇقىرى، 200$ گىچە = 5$</p>
+<p>200$ دىن يۇقىرى = 7$</p>
+<p class="small">سۈرىيە لىراسىدا باھا كىرگۈزگەندە، مۇلازىمەت ھەققىنى ھېسابلاش ئۈچۈن دوللارغا ئايلاندۇرۇلغان قىممىتى ئىشلىتىلىدۇ. پېرېۋوت نىسبىتىنى مۇلازىمېتىردا تەڭشەش كېرەك.</p>
+</div>
+
+<button class="primary" type="submit">ھېساباتنى يوللاش</button>
+</form>
+
+<p class="small">ئىككى رەسىم مەجبۇرىي. سىن ئىختىيارى. پارول ياكى بىخەتەرلىك كودىنى يوللىماڭ.</p>
+</div>
+</section>
+
+<section id="search" class="container hidden">
+<div class="card">
+<h2>🔎 ھېسابات ئىزدەش</h2>
+<input id="accountSearch" placeholder="ئۈسكۈنە ياكى باھا بويىچە ئىزدەڭ..." oninput="renderAccounts('searchResults')">
+<div id="searchResults"></div>
+</div>
+</section>
+
+<section id="mine" class="container hidden">
+<h2>📋 مېنىڭ ھېسابلىرىم</h2>
+<div id="myAccounts"></div>
+</section>
+
+<section id="create" class="container hidden">
+<div class="card">
+<h2>🎮 كوماندا يىغىش</h2>
+
+<label>كوماندا نامى</label>
+<input id="teamName" placeholder="كوماندا نامىنى يېزىڭ">
+
+<label>قانچە كىشىلىك كوماندا؟</label>
+<input id="teamSize" type="number" min="1" max="100" placeholder="مەسىلەن: 5">
+
+<p class="small">تۆۋەندىكى روللارنىڭ سانىنى بەلگىلەڭ.</p>
+
+<div class="role-grid">
+<div class="role-box">
+<label>🌲 ئورمان</label>
+<input type="number" id="jungle" min="0" value="0">
+</div>
+<div class="role-box">
+<label>🛡️ تانكا</label>
+<input type="number" id="tank" min="0" value="0">
+</div>
+<div class="role-box">
+<label>⚔️ ئېكىسپى</label>
+<input type="number" id="exp" min="0" value="0">
+</div>
+<div class="role-box">
+<label>🏹 ئاتقۇچى</label>
+<input type="number" id="marksman" min="0" value="0">
+</div>
+<div class="role-box">
+<label>🔮 سېھىرگەر</label>
+<input type="number" id="mage" min="0" value="0">
+</div>
+</div>
+
+<label>كېرەكلىك Rank</label>
+<select id="teamRank">
+<option>ھەممە Rank</option>
+<option>Epic</option>
+<option>Legend</option>
+<option>Mythic</option>
+<option>Mythical Glory</option>
+<option>Mythical Immortal</option>
+</select>
+
+<label>كوماندا ئۇچۇرى</label>
+<textarea id="teamNote" placeholder="ئويۇن ۋاقتى، كېرەكلىك شەرتلەر..."></textarea>
+
+<button class="primary" onclick="createTeam()">🔥 كوماندا ئېلان قىلىش</button>
+</div>
+</section>
+
+<section id="teams" class="container hidden">
+<h2>🔥 ئوچۇق كوماندىلار</h2>
+<div id="teamList"></div>
+</section>
+
+<section id="notifications" class="container hidden">
+<div class="card">
+<h2>🔔 ئۇقتۇرۇشلار</h2>
+<p>ھازىرچە يېڭى ئۇقتۇرۇش يوق.</p>
+</div>
+</section>
+
+<section id="invite" class="container hidden">
+<div class="card">
+<h2>👥 دوست تەكلىپ قىلىش</h2>
+<p>تور بېتىمىزنى دوستلىرىڭىز بىلەن ئورتاقلىشىڭ.</p>
+<button class="primary" onclick="shareSite()">ئۇلىنىشنى ئورتاقلىشىش</button>
+</div>
+</section>
+
+<section id="info" class="container hidden">
+<div class="card">
+<h2>ℹ️ MLBB ARENA</h2>
+<p>ئويۇنچىلار ۋە كوماندىلارنى بىر يەرگە جەم قىلىدىغان مەيدان.</p>
+<p><a style="color:#ae92ff" href="https://t.me/Bang_Bang_Players_uy" target="_blank">Telegram قانىلىمىز</a></p>
+</div>
+</section>
+
+</main>
+
+<footer>MLBB ARENA © 2026</footer>
+
+<script>
+let players=JSON.parse(localStorage.getItem("mlbbPlayers")||"[]");
+let teams=JSON.parse(localStorage.getItem("mlbbTeams")||"[]");
+let accounts=JSON.parse(localStorage.getItem("mlbbAccounts")||"[]");
+
+const roles=[
+["jungle","ئورمان"],
+["tank","تانكا"],
+["exp","ئېكىسپى"],
+["marksman","ئاتقۇچى"],
+["mage","سېھىرگەر"]
+];
+
+const TELEGRAM_CHANNEL="https://t.me/Bang_Bang_Players_uy";
+
+function page(id){
+document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
+
+if(id==="teams")renderTeams();
+if(id==="mine")renderMine();
+if(id==="search")renderAccounts("searchResults");
+}
+
+function saveAccounts(){
+localStorage.setItem("mlbbAccounts",JSON.stringify(accounts));
+}
+
+function fileToDataURL(file){
+return new Promise((resolve,reject)=>{
+const reader=new FileReader();
+reader.onload=()=>resolve(reader.result);
+reader.onerror=reject;
+reader.readAsDataURL(file);
+});
+}
+
+function serviceFee(priceUSD){
+if(priceUSD<=50)return 1.5;
+if(priceUSD<=100)return 3;
+if(priceUSD<=200)return 5;
+return 7;
+}
+
+document.getElementById("accountForm").addEventListener("submit",async function(e){
+e.preventDefault();
+
+const photo1=document.getElementById("photo1").files[0];
+const photo2=document.getElementById("photo2").files[0];
+const video=document.getElementById("accountVideo").files[0];
+
+const price=Number(document.getElementById("accountPrice").value);
+const currency=document.getElementById("currency").value;
+
+if(!photo1||!photo2){
+alert("ئىككى پارچە رەسىمنى تاللاڭ!");
+return;
+}
+
+if(!Number.isFinite(price)||price<=0){
+alert("توغرا باھا كىرگۈزۈڭ!");
+return;
+}
+
+if(photo1.size>5*1024*1024||photo2.size>5*1024*1024){
+alert("ھەر بىر رەسىم 5MB دىن كىچىك بولۇشى كېرەك.");
+return;
+}
+
+if(video&&video.size>15*1024*1024){
+alert("سىن 15MB دىن كىچىك بولۇشى كېرەك.");
+return;
+}
+
+const telegram=document.getElementById("telegram").value.trim();
+const note=document.getElementById("accountNote").value.trim();
+
+const feeCurrencyPrice=currency==="USD"
+?price
+:price/Number(window.SYP_PER_USD||0);
+
+if(currency==="SYP"&&(!window.SYP_PER_USD||window.SYP_PER_USD<=0)){
+alert("سۈرىيە لىراسى ئۈچۈن دوللارغا ئايلاندۇرۇش نىسبىتى تېخى تەڭشەلمىگەن. ھازىر دوللار تاللاپ يوللىسىڭىز بولىدۇ.");
+return;
+}
+
+const fee=serviceFee(feeCurrencyPrice);
+
+if(!confirm("ھېسابات باھاسى: "+price+" "+currency+
+"\nمۇلازىمەت ھەققى: $"+fee+
+"\nھېساباتنى Telegram قانىلىغا يوللامسىز؟"))return;
+
+const submitButton=this.querySelector('button[type="submit"]');
+submitButton.disabled=true;
+submitButton.textContent="يوللىنىۋاتىدۇ...";
+
+try{
+const formData=new FormData();
+formData.append("photo1",photo1);
+formData.append("photo2",photo2);
+if(video)formData.append("video",video);
+
+formData.append("price",String(price));
+formData.append("currency",currency);
+formData.append("fee",String(fee));
+formData.append("negotiable",document.getElementById("negotiable").value);
+formData.append("exchange",document.getElementById("exchange").value);
+formData.append("device",document.getElementById("device").value);
+formData.append("telegram",telegram);
+formData.append("note",note);
+
+const response=await fetch("/api/submit",{method:"POST",body:formData});
+const result=await response.json();
+
+if(!response.ok||!result.ok){
+throw new Error(result.error||"Telegram غا يوللاش مەغلۇپ بولدى");
+}
+
+const saved={
+id:Date.now(),
+price:price,
+currency:currency,
+fee:fee,
+negotiable:document.getElementById("negotiable").value,
+exchange:document.getElementById("exchange").value,
+device:document.getElementById("device").value,
+telegram:telegram,
+note:note,
+photo1:await fileToDataURL(photo1),
+photo2:await fileToDataURL(photo2),
+date:new Date().toLocaleDateString()
+};
+
+accounts.unshift(saved);
+saveAccounts();
+
+this.reset();
+alert("ھېسابات مۇۋەپپەقىيەتلىك يوللاندى!");
+page("mine");
+
+}catch(error){
+alert("يوللاش مەغلۇپ بولدى: "+error.message);
+}finally{
+submitButton.disabled=false;
+submitButton.textContent="ھېساباتنى يوللاش";
+}
+});
+
+function safeText(value){
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+function accountHTML(a,showDelete){
+const currency=a.currency==="USD"?"$":"SYP";
+const telegramLink=a.telegram
+? "https://t.me/"+encodeURIComponent(a.telegram.replace("@",""))
+: TELEGRAM_CHANNEL;
+
+return `
+<div class="card">
+<h2>🛒 ھېسابات #${a.id}</h2>
+<p>باھاسى: <b>${safeText(a.price)} ${currency}</b></p>
+<p>مۇلازىمەت ھەققى: $${safeText(a.fee)}</p>
+<p>باھادا كېلىشىش: ${safeText(a.negotiable)}</p>
+<p>ئالماشتۇرۇش: ${safeText(a.exchange)}</p>
+<p>ئۈسكۈنە: ${safeText(a.device)}</p>
+<p>Telegram: ${safeText(a.telegram||"كۆرسىتىلمىگەن")}</p>
+<p>${safeText(a.note||"")}</p>
+<p class="small">يوللانغان ۋاقتى: ${safeText(a.date||"")}</p>
+<img class="account-img" src="${a.photo1}" alt="ھېسابات رەسىمى 1">
+<img class="account-img" src="${a.photo2}" alt="ھېسابات رەسىمى 2">
+<a class="contact" href="${telegramLink}" target="_blank">ئالاقىلىشىش</a>
+${showDelete?`<button class="delete" onclick="deleteAccount(${Number(a.id)})">ھېساباتنى ئۆچۈرۈش</button>`:""}
+</div>`;
+}
+
+function renderAccounts(target){
+const box=document.getElementById(target);
+box.innerHTML="";
+
+const q=(document.getElementById("accountSearch")?.value||"").toLowerCase();
+
+const data=accounts.filter(a=>
+String(a.device).toLowerCase().includes(q)||
+String(a.price).toLowerCase().includes(q)||
+String(a.currency).toLowerCase().includes(q)
+);
+
+if(!data.length){
+box.textContent="ھېسابات تېپىلمىدى.";
+return;
+}
+
+data.forEach(a=>{
+box.insertAdjacentHTML("beforeend",accountHTML(a,false));
+});
+}
+
+function renderMine(){
+const box=document.getElementById("myAccounts");
+box.innerHTML="";
+
+if(!accounts.length){
+box.textContent="سىز تېخى ھېسابات يوللىمىدىڭىز.";
+return;
+}
+
+accounts.forEach(a=>{
+box.insertAdjacentHTML("beforeend",accountHTML(a,true));
+});
+}
+
+function deleteAccount(id){
+if(!confirm("بۇ ھېساباتنى ئۆچۈرەمسىز؟"))return;
+accounts=accounts.filter(a=>a.id!==id);
+saveAccounts();
+renderMine();
+}
+
+function createTeam(){
+let name=document.getElementById("teamName").value.trim();
+let size=Number(document.getElementById("teamSize").value);
+
+if(!name||!Number.isInteger(size)||size<1||size>100){
+alert("كوماندا نامى ۋە توغرا ئادەم سانىنى كىرگۈزۈڭ!");
+return;
+}
+
+let selected={};
+let sum=0;
+
+for(let [id,label] of roles){
+let n=Number(document.getElementById(id).value);
+
+if(!Number.isInteger(n)||n<0){
+alert("رول سانى خاتا!");
+return;
+}
+
+selected[label]=n;
+sum+=n;
+}
+
+if(sum!==size){
+alert("روللارنىڭ ئومۇمىي سانى "+size+" بولۇشى كېرەك. ھازىرقى سانى: "+sum);
+return;
+}
+
+teams.push({
+id:Date.now(),
+name:name,
+size:size,
+roles:selected,
+rank:document.getElementById("teamRank").value,
+note:document.getElementById("teamNote").value.trim()
+});
+
+localStorage.setItem("mlbbTeams",JSON.stringify(teams));
+
+alert("كوماندا ئېلان قىلىندى!");
+
+document.getElementById("teamName").value="";
+document.getElementById("teamSize").value="";
+document.getElementById("teamNote").value="";
+roles.forEach(([id])=>document.getElementById(id).value=0);
+
+page("teams");
+}
+
+function renderTeams(){
+let box=document.getElementById("teamList");
+box.innerHTML="";
+
+if(!teams.length){
+box.textContent="ھازىرچە ئوچۇق كوماندا يوق.";
+return;
+}
+
+[...teams].reverse().forEach(t=>{
+let card=document.createElement("div");
+card.className="card";
+
+let h=document.createElement("h2");
+h.textContent="🔥 "+t.name;
+card.appendChild(h);
+
+let info=[
+"ئادەم سانى: "+t.size,
+"Rank: "+t.rank,
+...Object.entries(t.roles).map(([k,v])=>k+": "+v),
+"ئۇچۇر: "+t.note
+];
+
+info.forEach(x=>{
+let p=document.createElement("p");
+p.textContent=x;
+card.appendChild(p);
+});
+
+box.appendChild(card);
+});
+}
+
+function shareSite(){
+if(navigator.share){
+navigator.share({title:"MLBB ARENA",url:location.href});
+}else if(navigator.clipboard){
+navigator.clipboard.writeText(location.href);
+alert("ئۇلىنىش كۆچۈرۈلدى!");
+}else{
+alert("بۇ ئۈسكۈنىدە ئورتاقلىشىش ئىقتىدارى ئىشلىمىدى.");
+}
+}
+</script>
+</body>
+</html>
