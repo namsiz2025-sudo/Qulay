@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="ug" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تۇر خىزمىتى</title>  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f6fa;
+      color: #222;
+      padding-bottom: 90px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #5b2be0, #7b4df2);
+      color: white;
+      padding: 22px 18px 38px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .balance {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: -25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    }
+
+    .balance small {
+      color: #777;
+    }
+
+    .balance h2 {
+      margin-top: 8px;
+      font-size: 30px;
+      color: #5b2be0;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 25px 0 15px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .category,
+    .card,
+    .product {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .category {
+      text-align: center;
+    }
+
+    .icon {
+      font-size: 35px;
+      margin-bottom: 8px;
+    }
+
+    .product {
+      margin-bottom: 12px;
+    }
+
+    .activity {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .time {
+      background: #fff3cd;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .old-price {
+      color: #999;
+      text-decoration: line-through;
+      margin: 8px 0;
+    }
+
+    .new-price {
+      color: #e11d48;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .input {
+      width: 100%;
+      padding: 15px;
+      margin: 12px 0;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #5b2be0;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .success {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 50px 10px;
+      color: #888;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 75px;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -3px 15px rgba(0,0,0,.08);
+      border-radius: 22px 22px 0 0;
+    }
+
+    .nav-item {
+      background: none;
+      border: none;
+      color: #777;
+      font-size: 10px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .nav-item span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active {
+      color: #5b2be0;
+      font-weight: bold;
+    }
+  </style></head><body><header>
+  <div class="logo">🛍️ تۇر خىزمىتى</div>
+</header><!-- باش بەت --><div class="page active" id="home">
+  <div class="container"><div class="balance">
+  <small>ھازىرقى قالدۇق</small>
+  <h2>$0.00</h2>
+</div>
+
+<div class="title">🛍️ مۇلازىمەتلەر</div>
+
+<div class="categories">
+
+  <div class="category">
+    <div class="icon">🎮</div>
+    ئويۇنلار
+  </div>
+
+  <div class="category">
+    <div class="icon">📱</div>
+    ئەزالىقلار
+  </div>
+
+  <div class="category">
+    <div class="icon">💎</div>
+    مەۋھۇم نومۇر
+  </div>
+
+  <div class="category">
+    <div class="icon">📢</div>
+    Telegram
+  </div>
+
+</div>
+
+  </div>
+</div><!-- زاكاسلىرىم --><div class="page" id="orders">
+  <div class="container"><div class="title">📦 زاكاسلىرىم</div>
+
+<div class="empty">
+  📦<br><br>
+  تېخى زاكاس يوق
+</div>
+
+  </div>
+</div><!-- پائالىيەت --><div class="page" id="activity">
+  <div class="container"><div class="title">🎉 پائالىيەت</div>
+
+<div class="activity">
+  <h3>🔥 ئالاھىدە ئېتىبار</h3>
+
+  <div class="time">
+    ⏰ پائالىيەت ۋاقتى: كېيىن ئارقا سۇپىدىن بەلگىلىنىدۇ
+  </div>
+
+  <p>💵 ئەسلىي باھاسى:</p>
+  <div class="old-price">$10.00</div>
+
+  <p>🔥 ھازىرقى باھا:</p>
+  <div class="new-price">$7.00</div>
+</div>
+
+  </div>
+</div><!-- پۇل قاچىلاش --><div class="page" id="deposit">
+  <div class="container"><div class="title">💳 پۇل قاچىلاش</div>
+
+<div class="card">
+
+  <p>قاچىلايدىغان سوممىنى كىرگۈزۈڭ:</p>
+
+  <input
+    type="number"
+    id="amount"
+    class="input"
+    placeholder="مەسىلەن: 10000"
+    min="1"
+  >
+
+  <button class="btn" id="depositBtn" onclick="deposit()">
+    پۇل قاچىلاشنى داۋاملاشتۇرۇش
+  </button>
+
+  <div id="paymentMessage" class="message"></div>
+
+</div>
+
+  </div>
+</div><!-- ھېساباتىم --><div class="page" id="account">
+  <div class="container"><div class="title">👤 ھېساباتىم</div>
+
+<div class="card">
+  <h3>تۇر خىزمىتى</h3>
+
+  <br>
+
+  <p>💰 قالدۇق: $0.00</p>
+
+  <br>
+
+  <p>⚙️ تەڭشەكلەر</p>
+
+  <br>
+
+  <p>💬 قوللاش مەركىزى</p>
+</div>
+
+  </div>
+</div><!-- ئاستىدىكى مېنۇ --><nav>  <button class="nav-item active" onclick="showPage('home', this)">
+    <span>🏠</span>
+    باش بەت
+  </button>  <button class="nav-item" onclick="showPage('orders', this)">
+    <span>📦</span>
+    زاكاسلىرىم
+  </button>  <button class="nav-item" onclick="showPage('activity', this)">
+    <span>🎉</span>
+    پائالىيەت
+  </button>  <button class="nav-item" onclick="showPage('deposit', this)">
+    <span>💳</span>
+    پۇل قاچىلاش
+  </button>  <button class="nav-item" onclick="showPage('account', this)">
+    <span>👤</span>
+    ھېساباتىم
+  </button></nav><script>
+
+function showPage(pageId, button) {
+
+  document.querySelectorAll(".page").forEach(function(page) {
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  document.querySelectorAll(".nav-item").forEach(function(item) {
+    item.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  window.scrollTo(0, 0);
+}
+
+
+function showPaymentMessage(text, type) {
+
+  const message = document.getElementById("paymentMessage");
+
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+
+async function deposit() {
+
+  const amount = Number(
+    document.getElementById("amount").value
+  );
+
+  const button = document.getElementById("depositBtn");
+
+  if (!amount || amount <= 0) {
+    showPaymentMessage(
+      "مۇۋاپىق سومما كىرگۈزۈڭ!",
+      "error"
+    );
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "كۈتۈپ تۇرۇڭ...";
+
+  try {
+
+    const response = await fetch(
+      "/api/create-payment",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          amount: amount
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      showPaymentMessage(
+        data.error || "پۇل قاچىلاشتا خاتالىق كۆرۈلدى",
+        "error"
+      );
+
+      return;
+    }
+
+    console.log("Payment response:", data);
+
+    showPaymentMessage(
+      "پۇل تۆلەش ئىلتىماسى قۇرۇلدى!",
+      "success"
+    );
+
+    /*
+      كېيىن ShamCash API قايتۇرغان
+      payment URL / QR / invoice ئۇچۇرىغا
+      ماس ھالدا بۇ يەرنى تولۇق ئۇلايمىز.
+    */
+
+  } catch (error) {
+
+    console.error(error);
+
+    showPaymentMessage(
+      "Server بىلەن ئۇلىنىشتا خاتالىق كۆرۈلدى",
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "پۇل قاچىلاشنى داۋاملاشتۇرۇش";
+
+  }
+}
+
+</script></body>
+</html>
