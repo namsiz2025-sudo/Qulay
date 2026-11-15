@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qulay Store</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif}
+header{padding:22px 16px;background:#121a30;border-bottom:1px solid #26334f}
+header h1{margin:0;color:#55d6be;font-size:26px}
+header p{color:#aab5ca;margin:8px 0 0}
+main{padding:16px;max-width:1000px;margin:auto}
+.search{width:100%;padding:14px;border-radius:12px;border:1px solid #34425f;background:#17223a;color:white;font-size:16px;margin-bottom:18px}
+h2{font-size:19px}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}
+.card{background:#17223a;border:1px solid #293957;border-radius:15px;padding:14px}
+.card h3{font-size:16px;margin:5px 0 12px}
+.price{color:#55d6be;font-size:19px;font-weight:bold}
+.small{color:#aab5ca;font-size:12px}
+button{border:0;border-radius:10px;padding:12px;background:#18b99e;color:#071b1a;font-weight:bold;font-size:15px;cursor:pointer}
+.card button{width:100%;margin-top:12px}
+button:disabled{opacity:.5}
+.panel{display:none;background:#17223a;padding:18px;border-radius:15px;margin-top:20px}
+input{width:100%;padding:13px;margin:8px 0 14px;background:#0d172b;color:white;border:1px solid #3b4c6b;border-radius:9px;font-size:15px}
+label{display:block;color:#c7d2e5;font-size:14px}
+#message{padding:12px;border-radius:10px;margin:15px 0;display:none;white-space:pre-wrap}
+.error{background:#51232b;color:#ffd9df}
+.ok{background:#174638;color:#caffed}
+.loading{text-align:center;color:#aab5ca;padding:30px}
+footer{text-align:center;padding:25px;color:#8290aa;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Qulay Store</h1>
+<p>ئويۇن، مەۋھۇم نومۇر ۋە رەقەملىك مۇلازىمەتلەر</p>
+</header>
+
+<main>
+<div id="message"></div>
+
+<h2>مەھسۇلاتلار</h2>
+<input class="search" id="search" placeholder="مەھسۇلات ئىزدەش..." oninput="filterProducts()">
+
+<div id="products" class="products">
+<div class="loading">مەھسۇلاتلار يۈكلىنىۋاتىدۇ...</div>
+</div>
+
+<div id="orderPanel" class="panel">
+<h2 id="orderTitle">زاكاس قىلىش</h2>
+<p id="orderPrice" class="price"></p>
+
+<div id="paramFields"></div>
+
+<label>سانى</label>
+<input id="qty" type="number" min="1" value="1">
+
+<button id="orderButton" onclick="submitOrder()">زاكاسنى يوللاش</button>
+<button onclick="closeOrder()" style="background:#34425f;color:white;margin-top:10px">قايتىش</button>
+</div>
+
+<h2 style="margin-top:30px">زاكاس ئەھۋالى</h2>
+<input id="orderCheck" placeholder="زاكاس نومۇرىنى كىرگۈزۈڭ">
+<button onclick="checkOrder()">تەكشۈرۈش</button>
+<div id="checkResult"></div>
+</main>
+
+<footer>Qulay Store © 2026</footer>
+
+<script>
+let allProducts = [];
+let selectedProduct = null;
+
+function showMessage(text,type="error"){
+ const box=document.getElementById("message");
+ box.textContent=text;
+ box.className=type;
+ box.style.display="block";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function api(url,options={}){
+ const response=await fetch(url,options);
+ const result=await response.json();
+ if(!response.ok || result.success===false){
+   throw new Error(
+     result.data?.detail?.message ||
+     result.data?.message ||
+     result.error ||
+     "API خاتالىقى"
+   );
+ }
+ return result.data ?? result;
+}
+
+async function loadProducts(){
+ const box=document.getElementById("products");
+ try{
+   const result=await api("/api/maxstore?action=products");
+   allProducts=Array.isArray(result)
+     ? result
+     : result.products || result.data || [];
+
+   if(!Array.isArray(allProducts) || !allProducts.length){
+     box.innerHTML='<div class="loading">ھازىرچە مەھسۇلات يوق.</div>';
+     return;
+   }
+   renderProducts(allProducts);
+ }catch(error){
+   box.innerHTML='<div class="loading">مەھسۇلاتلارنى ئېلىش مەغلۇپ بولدى.</div>';
+   showMessage("خاتالىق: "+error.message);
+ }
+}
+
+function renderProducts(products){
+ const box=document.getElementById("products");
+ box.innerHTML="";
+
+ products.forEach(product=>{
+   const card=document.createElement("div");
+   card.className="card";
+
+   const name=document.createElement("h3");
+   name.textContent=product.name || "مەھسۇلات";
+
+   const price=document.createElement("div");
+   price.className="price";
+   price.textContent=product.price+" USD";
+
+   const type=document.createElement("p");
+   type.className="small";
+   type.textContent=product.available===false
+     ? "ھازىرچە يوق"
+     : "سېتىۋالغىلى بولىدۇ";
+
+   const button=document.createElement("button");
+   button.textContent="سېتىۋېلىش";
+   button.disabled=product.available===false;
+   button.onclick=()=>openOrder(product);
+
+   card.append(name,price,type,button);
+   box.appendChild(card);
+ });
+}
+
+function filterProducts(){
+ const word=document.getElementById("search").value.toLowerCase();
+ renderProducts(allProducts.filter(p=>
+   String(p.name||"").toLowerCase().includes(word)
+ ));
+}
+
+function openOrder(product){
+ selectedProduct=product;
+ document.getElementById("orderPanel").style.display="block";
+ document.getElementById("orderTitle").textContent=product.name;
+ document.getElementById("orderPrice").textContent=product.price+" USD";
+ document.getElementById("qty").value=1;
+
+ const fields=document.getElementById("paramFields");
+ fields.innerHTML="";
+
+ (Array.isArray(product.params)?product.params:[]).forEach(param=>{
+   const label=document.createElement("label");
+   label.textContent=param;
+
+   const input=document.createElement("input");
+   input.placeholder=param;
+   input.dataset.param=param;
+   input.required=true;
+
+   fields.append(label,input);
+ });
+
+ document.getElementById("orderPanel").scrollIntoView({behavior:"smooth"});
+}
+
+function closeOrder(){
+ document.getElementById("orderPanel").style.display="none";
+ selectedProduct=null;
+}
+
+async function submitOrder(){
+ if(!selectedProduct)return;
+
+ const button=document.getElementById("orderButton");
+ const qty=Number(document.getElementById("qty").value);
+ const min=Number(selectedProduct.qty_values?.min||1);
+ const max=Number(selectedProduct.qty_values?.max||1);
+
+ if(!Number.isInteger(qty)||qty<min||qty>max){
+   showMessage("سانى توغرا كىرگۈزۈڭ. ئەڭ كىچىكى: "+min+"، ئەڭ چوڭى: "+max);
+   return;
+ }
+
+ const params={};
+ const inputs=document.querySelectorAll("#paramFields input");
+
+ for(const input of inputs){
+   if(!input.value.trim()){
+     showMessage(input.placeholder+" نى كىرگۈزۈڭ");
+     input.focus();
+     return;
+   }
+
+   const key=input.dataset.param
+     .toLowerCase()
+     .trim()
+     .replace(/[^a-z0-9]+/g,"_")
+     .replace(/^_|_$/g,"");
+
+   params[key]=input.value.trim();
+ }
+
+ button.disabled=true;
+ button.textContent="يوللىنىۋاتىدۇ...";
+
+ try{
+   const uuid=crypto.randomUUID();
+
+   const result=await api("/api/maxstore?action=order",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({
+       product_id:selectedProduct.id,
+       qty:selectedProduct.product_type==="package"?1:qty,
+       order_uuid:uuid,
+       params
+     })
+   });
+
+   const data=result.data || result;
+   showMessage(
+     "زاكاس يوللاندى!\nزاكاس نومۇرى: "+
+     (data.order_id||uuid)+
+     "\nھالىتى: "+(data.status||"wait"),
+     "ok"
+   );
+
+   closeOrder();
+ }catch(error){
+   showMessage("زاكاس مەغلۇپ بولدى: "+error.message);
+ }finally{
+   button.disabled=false;
+   button.textContent="زاكاسنى يوللاش";
+ }
+}
+
+async function checkOrder(){
+ const id=document.getElementById("orderCheck").value.trim();
+ const output=document.getElementById("checkResult");
+
+ if(!id){
+   output.textContent="زاكاس نومۇرىنى كىرگۈزۈڭ";
+   return;
+ }
+
+ try{
+   const result=await api(
+     "/api/maxstore?action=check&orders="+encodeURIComponent(id)
+   );
+   output.textContent=JSON.stringify(result,null,2);
+ }catch(error){
+   output.textContent="تەكشۈرۈش مەغلۇپ بولدى: "+error.message;
+ }
+}
+
+loadProducts();
+</script>
+</body>
+</html>
