@@ -1,0 +1,9 @@
+
+{
+  "name": "mlbb-arena",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "formidable": "^3.5.2"
+  }
+}
