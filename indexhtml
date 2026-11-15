@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qulay Store</title>
+<style>
+:root{--bg:#0b1220;--panel:#141f32;--panel2:#1b2940;--text:#f4f7ff;--muted:#91a0b8;--main:#18c6a3;--line:#263650}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:85px}
+header{padding:22px 18px;background:linear-gradient(135deg,#102c3d,#123e48)}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:25px;font-weight:bold;color:#fff}
+.logo span{color:var(--main)}
+.tag{font-size:12px;color:#b5c7d5}
+.container{max-width:760px;margin:auto;padding:16px}
+.page{display:none}.page.active{display:block}
+.balance{background:linear-gradient(120deg,#087e73,#16b99a);padding:22px;border-radius:20px;margin-top:-5px}
+.balance small{opacity:.85}.balance h2{font-size:30px;margin:10px 0}
+.btn{border:0;border-radius:12px;background:var(--main);color:#06251f;padding:13px 17px;font-weight:bold;font-size:15px;cursor:pointer}
+.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.btn.full{width:100%}
+.section-title{font-size:19px;margin:23px 0 13px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.quick button{background:var(--panel);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:15px 5px;font-size:13px;cursor:pointer}
+.quick b{display:block;font-size:24px;margin-bottom:7px}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.category,.card,.product{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.category{cursor:pointer;text-align:center}
+.category .ico{font-size:30px;margin-bottom:8px}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.product{margin-bottom:10px}
+.product h3{font-size:16px;margin-bottom:8px}
+.price{color:var(--main);font-size:19px;font-weight:bold;margin:10px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+input,select,textarea{width:100%;background:#0d1728;color:white;border:1px solid var(--line);border-radius:11px;padding:13px;margin:8px 0;font-size:15px}
+label{font-size:13px;color:var(--muted)}
+.notice{background:#172c37;border:1px solid #23584f;padding:13px;border-radius:12px;margin:12px 0;color:#c9fff0;font-size:13px;line-height:1.8}
+.search{margin:12px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#111c2d;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom));z-index:10}
+nav button{background:none;border:0;color:var(--muted);font-size:11px;cursor:pointer}
+nav button.active{color:var(--main)}
+nav b{display:block;font-size:21px;margin-bottom:4px}
+.empty{text-align:center;color:var(--muted);padding:28px 8px}
+.badge{font-size:11px;background:#173d39;color:#8df5dc;padding:5px 9px;border-radius:20px}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="top">
+  <div>
+   <div class="logo">Qulay<span> Store</span></div>
+   <div class="tag">رەقەملىك مۇلازىمەت دۇكىنى</div>
+  </div>
+  <span class="badge">توردا</span>
+ </div>
+</header>
+
+<main class="container">
+
+<!-- باشبەت -->
+<section id="home" class="page active">
+ <div class="balance">
+  <small>ھېسابات قالدۇقى</small>
+  <h2>0.00 USD</h2>
+  <button class="btn secondary" onclick="showPage('deposit')">＋ پۇل قاچىلاش</button>
+ </div>
+
+ <h3 class="section-title">تېز مۇلازىمەتلەر</h3>
+ <div class="quick">
+  <button onclick="showPage('products')"><b>🎮</b>ئويۇنلار</button>
+  <button onclick="showPage('products')"><b>📱</b>مەۋھۇم نومۇر</button>
+  <button onclick="showPage('products')"><b>💬</b>تېلېگرام</button>
+  <button onclick="showPage('deposit')"><b>💳</b>پۇل قاچىلاش</button>
+ </div>
+
+ <h3 class="section-title">مۇلازىمەت تۈرلىرى</h3>
+ <div class="categories">
+  <div class="category" onclick="showPage('products')"><div class="ico">🎮</div><b>ئويۇن مۇلازىمەتلىرى</b><p class="muted">UC، Diamond ۋە باشقىلار</p></div>
+  <div class="category" onclick="showPage('products')"><div class="ico">📞</div><b>مەۋھۇم نومۇر</b><p class="muted">ھەر خىل نومۇرلار</p></div>
+  <div class="category" onclick="showPage('products')"><div class="ico">✈️</div><b>تېلېگرام</b><p class="muted">رەقەملىك مۇلازىمەت</p></div>
+  <div class="category" onclick="showPage('products')"><div class="ico">🌐</div><b>باشقا مۇلازىمەتلەر</b><p class="muted">ھەر خىل مەھسۇلاتلار</p></div>
+ </div>
+
+ <h3 class="section-title">يېڭى مەھسۇلاتلار</h3>
+ <div id="homeProducts" class="muted">مەھسۇلاتلار يۈكلىنىۋاتىدۇ...</div>
+</section>
+
+<!-- مەھسۇلاتلار -->
+<section id="products" class="page">
+ <h2 class="section-title">بارلىق مەھسۇلاتلار</h2>
+ <input id="search" class="search" placeholder="مەھسۇلات ئىزدەڭ..." oninput="renderProducts()">
+ <div class="row">
+  <span class="muted">MaxStore دىن كەلگەن مەھسۇلاتلار</span>
+  <button class="btn secondary" onclick="loadProducts()">قايتا يۈكلەش</button>
+ </div>
+ <div id="productList" style="margin-top:14px">
+  <div class="empty">مەھسۇلاتلار يۈكلىنىۋاتىدۇ...</div>
+ </div>
+ <div id="apiError" class="notice" style="display:none"></div>
+</section>
+
+<!-- زاكاسلار -->
+<section id="orders" class="page">
+ <h2 class="section-title">زاكاسلىرىم</h2>
+ <div class="card">
+  <div class="empty">ھازىرچە زاكاس يوق</div>
+  <p class="muted">زاكاس تارىخىنى ساقلاش ئۈچۈن كېيىن مۇلازىمېتىرغا ساقلاش ئىقتىدارى قوشۇلىدۇ.</p>
+ </div>
+</section>
+
+<!-- پۇل قاچىلاش -->
+<section id="deposit" class="page">
+ <h2 class="section-title">پۇل قاچىلاش</h2>
+ <div class="notice">
+  پۇل قاچىلاش ھازىر قولدا تەستىقلىنىدۇ. پۇل ئەۋەتكەندىن كېيىن تالونىڭىزنى باشقۇرغۇچىغا يوللاڭ. تەستىقلانغاندىن كېيىن قالدۇقىڭىز قوشۇلىدۇ.
+ </div>
+ <div class="card">
+  <label>قاچىلاش سوممىسى (USD)</label>
+  <input id="depositAmount" type="number" min="1" placeholder="مەسىلەن: 10">
+  <label>پۇل ئەۋەتكەن ھېسابات ياكى ئىسمىڭىز</label>
+  <input id="depositName" placeholder="ھېسابات ئۇچۇرى">
+  <label>تالون نومۇرى ياكى ئىزاھات</label>
+  <textarea id="depositNote" rows="3" placeholder="پۇل تاپشۇرۇش ئۇچۇرى..."></textarea>
+  <button class="btn full" onclick="depositNotice()">ئۇچۇرنى تەييارلاش</button>
+  <p id="depositMessage" class="muted" style="margin-top:12px"></p>
+ </div>
+</section>
+
+<!-- ھېسابات -->
+<section id="account" class="page">
+ <h2 class="section-title">ھېساباتىم</h2>
+ <div class="card">
+  <p>👤 <b>مېنىڭ ھېساباتىم</b></p>
+  <hr>
+  <p class="muted">ئەزا ئۇچۇرى ۋە قالدۇق ئۇچۇرى كېيىنكى باسقۇچتا قوشۇلىدۇ.</p>
+ </div>
+ <h3 class="section-title">ياردەم</h3>
+ <div class="card">
+  <p>سوئال ياكى مەسىلىڭىز بولسا باشقۇرغۇچى بىلەن ئالاقىلىشىڭ.</p>
+ </div>
+</section>
+
+</main>
+
+<nav>
+ <button class="active" data-page="home" onclick="showPage('home')"><b>⌂</b>باشبەت</button>
+ <button data-page="products" onclick="showPage('products')"><b>▦</b>دۇكان</button>
+ <button data-page="orders" onclick="showPage('orders')"><b>▤</b>زاكاسلىرىم</button>
+ <button data-page="deposit" onclick="showPage('deposit')"><b>＋</b>پۇل قاچىلاش</button>
+ <button data-page="account" onclick="showPage('account')"><b>♙</b>ھېساباتىم</button>
+</nav>
+
+<script>
+let products = [];
+
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>{
+  b.classList.toggle('active',b.dataset.page===id);
+ });
+ if(id==='products' && products.length===0) loadProducts();
+}
+
+async function loadProducts(){
+ const list=document.getElementById('productList');
+ const error=document.getElementById('apiError');
+ list.innerHTML='<div class="empty">مەھسۇلاتلار يۈكلىنىۋاتىدۇ...</div>';
+ error.style.display='none';
+
+ try{
+  const response=await fetch('/api/maxstore?action=products');
+  const data=await response.json();
+
+  if(!response.ok || data.detail || data.error){
+   throw new Error(data.detail?.message || data.error || 'API خاتالىقى');
+  }
+
+  products=Array.isArray(data)?data:(data.data||[]);
+  renderProducts();
+  renderHomeProducts();
+
+  if(products.length===0){
+   list.innerHTML='<div class="empty">ھازىر مەھسۇلات يوق</div>';
+  }
+ }catch(err){
+  list.innerHTML='<div class="empty">مەھسۇلاتلارنى يۈكلىگىلى بولمىدى</div>';
+  error.style.display='block';
+  error.textContent='خاتالىق: '+err.message;
+ }
+}
+
+function renderProducts(){
+ const list=document.getElementById('productList');
+ const query=(document.getElementById('search')?.value||'').toLowerCase();
+ const filtered=products.filter(p=>(p.name||'').toLowerCase().includes(query));
+
+ if(!filtered.length){
+  list.innerHTML='<div class="empty">مەھسۇلات تېپىلمىدى</div>';
+  return;
+ }
+
+ list.innerHTML=filtered.map(p=>`
+  <div class="product">
+   <div class="row">
+    <h3>${safe(p.name||'مەھسۇلات')}</h3>
+    <span class="badge">${p.available?'بار':'يوق'}</span>
+   </div>
+   <p class="muted">مەھسۇلات نومۇرى: ${safe(p.id)}</p>
+   <div class="price">${safe(p.price)} USD</div>
+   <p class="muted">${safe((p.params||[]).join('، ')||'قوشۇمچە ئۇچۇر تەلەپ قىلىنمايدۇ')}</p>
+   <button class="btn full" onclick="showProductInfo(${Number(p.id)})">مەھسۇلات تەپسىلاتى</button>
+  </div>
+ `).join('');
+}
+
+function renderHomeProducts(){
+ const el=document.getElementById('homeProducts');
+ if(!products.length){
+  el.textContent='ھازىر مەھسۇلات يوق';
+  return;
+ }
+ el.innerHTML=products.slice(0,4).map(p=>`
+  <div class="product">
+   <div class="row"><b>${safe(p.name)}</b><span class="price">${safe(p.price)} USD</span></div>
+  </div>
+ `).join('');
+}
+
+function showProductInfo(id){
+ const p=products.find(x=>Number(x.id)===id);
+ if(!p)return;
+ alert(
+  'مەھسۇلات: '+p.name+
+  '\\nباھاسى: '+p.price+' USD'+
+  '\\nID: '+p.id+
+  '\\n\\nزاكاسنى ھازىرچە باشقۇرغۇچى قولدا بىر تەرەپ قىلىدۇ.'
+ );
+}
+
+function depositNotice(){
+ const amount=document.getElementById('depositAmount').value;
+ const name=document.getElementById('depositName').value.trim();
+ const note=document.getElementById('depositNote').value.trim();
+ const msg=document.getElementById('depositMessage');
+
+ if(!amount || Number(amount)<=0){
+  msg.textContent='سوممىنى توغرا كىرگۈزۈڭ.';
+  return;
+ }
+ if(!name || !note){
+  msg.textContent='ھېسابات ئۇچۇرى ۋە تالون ئىزاھاتىنى تولدۇرۇڭ.';
+  return;
+ }
+ msg.textContent='ئۇچۇر تەييار. بۇ نۇسخىدا ئىلتىماس مۇلازىمېتىرغا ساقلانمايدۇ؛ تالوننى باشقۇرغۇچىغا قولدا يوللاڭ.';
+}
+
+function safe(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+
+loadProducts();
+</script>
+</body>
+</html>
