@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>امتحان اللغة العربية — ٥٠ سؤالًا</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #18323e;
+  --teal: #126457;
+  --line: #cddfdc;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #edf5f4;
+  color: var(--ink);
+  font: 1rem/1.8 Tahoma, Arial, sans-serif;
+}
+main { max-width: 780px; margin: auto; padding: clamp(12px, 4vw, 32px); }
+header {
+  padding: clamp(20px, 6vw, 42px);
+  background: linear-gradient(130deg, #123749, #0d6257);
+  color: white;
+  border-radius: 24px;
+}
+h1 { margin: 0; font-size: clamp(1.65rem, 6vw, 2.5rem); line-height: 1.4; }
+header p { margin: 8px 0; }
+.info { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 18px; }
+.info input {
+  display: block;
+  width: 100%;
+  border: 1px solid #8cb5b1;
+  border-radius: 7px;
+  padding: 4px 8px;
+  background: #ffffff20;
+  color: inherit;
+  font: inherit;
+}
+.toolbar { display: flex; justify-content: flex-end; margin: 12px 0; }
+button {
+  font: inherit;
+  background: white;
+  color: var(--teal);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 16px;
+  cursor: pointer;
+}
+h2 { margin: 24px 0 0; padding: 10px 14px; color: white; background: #19596b; border-radius: 12px; font-size: 1.08rem; }
+section:nth-child(even) h2 { background: #26634f; }
+.instruction { margin: 6px 4px 12px; }
+.question {
+  margin: 10px 0;
+  padding: 13px 15px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  break-inside: avoid;
+}
+.question p { margin: 0; }
+.question b { color: var(--teal); }
+.ug { font-size: .94rem; color: #476071; }
+[lang="ug"] { unicode-bidi: isolate; }
+.passage {
+  padding: 10px 14px;
+  background: #fff4dc;
+  border-inline-start: 4px solid #ae7424;
+  border-radius: 8px;
+  break-after: avoid;
+}
+.answer { display: block; margin-top: 9px; }
+.answer span { display: block; color: #215d54; font-size: .88rem; }
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 4px;
+  padding: 7px 10px;
+  border: 1px solid #9bbdb4;
+  border-radius: 8px;
+  background: #f7fcfb;
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+textarea::placeholder { color: #5b706f; opacity: 1; }
+.options { display: grid; gap: 5px; margin-top: 10px; }
+.options.binary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.options label { border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; cursor: pointer; }
+.options label:has(input:checked) { background: #dff4ec; border-color: #528c7d; }
+input[type="radio"] { accent-color: var(--teal); }
+:focus-visible { outline: 2px solid #178772; outline-offset: 2px; }
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: white; font-size: 11pt; }
+  main { padding: 0; }
+  .toolbar, .answer span { display: none; }
+  header, section:nth-child(n) h2 { background: white; color: var(--ink); border: 1px solid #99ada8; }
+  header { padding: 12px; }
+  h2, .instruction { break-after: avoid; }
+  .question { margin: 6px 0; padding: 7px 10px; }
+  textarea { min-height: 30px; }
+  textarea::placeholder { color: transparent; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>امتحان اللغة العربية</h1>
+    <p>العربية بين يديك · كتاب الطالب الأول · الجزء الثاني</p>
+    <p>الوحدات ١٣–١٦ · ٥٠ سؤالًا · ١٠٠ درجة</p>
+    <div class="info">
+      <label>اسم الطالب <input type="text"></label>
+      <label>التاريخ <input type="text"></label>
+    </div>
+  </header>
+  <div class="toolbar">
+    <button type="button" id="print">طباعة الامتحان</button>
+  </div>
+  <div id="exam"></div>
+  <noscript>يرجى تفعيل JavaScript في المتصفح لعرض الأسئلة.</noscript>
+</main>
+
+<script>
+const sections = [
+  {
+    title: "السؤال الأول: ترجم الكلمات والعبارات إلى الأويغورية",
+    instruction: "سۆز ۋە ئىبارىلەرنى ئۇيغۇرچىغا تەرجىمە قىلىڭ.",
+    kind: "vocabulary",
+    groups: [{
+      rows: `جواز السفر
+الصيدلية
+الطواف
+العطلة الصيفية
+تأشيرة الدخول
+ألم الأسنان
+السعي بين الصفا والمروة
+عيد الفطر
+حجز التذكرة
+الفحص الطبي`
+    }]
+  },
+  {
+    title: "السؤال الثاني: اقرأ النصوص ثم أجب عن الأسئلة",
+    instruction: "تېكىستلەرنى ئوقۇپ، سوئاللارغا جاۋاب بېرىڭ.",
+    kind: "written",
+    groups: [
+      {
+        passage: "تهيّأ يوسف للسفر إلى جدة مع أخيه. حجز تذكرتين، ووضع جواز سفره في حقيبة صغيرة. وصل الأخوان إلى المطار قبل موعد الرحلة بساعتين.",
+        rows: `إلى أين سيسافر يوسف؟|يۈسۈپ قەيەرگە سەپەر قىلىدۇ؟
+ماذا وضع يوسف في الحقيبة الصغيرة؟|يۈسۈپ كىچىك سومكىغا نېمىنى سالدى؟
+متى وصل الأخوان إلى المطار؟|ئاكا-ئۇكا ئايرودۇرۇمغا قاچان يېتىپ باردى؟`
+      },
+      {
+        passage: "ذهب خالد إلى مكة لأداء العمرة. طاف حول الكعبة سبعة أشواط، ثم سعى بين الصفا والمروة.",
+        rows: `لماذا ذهب خالد إلى مكة؟|خالىد مەككىگە نېمە ئۈچۈن باردى؟
+كم شوطًا طاف خالد حول الكعبة؟|خالىد كەبىنى نەچچە قېتىم ئايلىنىپ تاۋاپ قىلدى؟`
+      },
+      {
+        passage: "شعرت مريم بألم في بطنها، فذهبت إلى المستشفى صباحًا. فحصها الطبيب وطلب منها أن تستريح في البيت وأن تأخذ الدواء بعد الطعام.",
+        rows: `أين شعرت مريم بالألم؟|مەريەمنىڭ قەيەرى ئاغرىدى؟
+متى تأخذ مريم الدواء؟|مەريەم دورىنى قاچان ئىچىدۇ؟`
+      },
+      {
+        passage: "في عطلة الصيف زارت سلمى جدّتها في القرية. بقيت هناك أسبوعًا، وكانت تخرج مع أختها إلى الحديقة كلّ مساء.",
+        rows: `مَن زارت سلمى في عطلة الصيف؟|سەلما يازلىق تەتىلدە كىمنى يوقلىدى؟
+كم بقيت سلمى في القرية؟|سەلما يېزىدا قانچىلىك ۋاقىت تۇردى؟
+مع مَن كانت سلمى تخرج إلى الحديقة؟|سەلما باغچىغا كىم بىلەن چىقاتتى؟`
+      }
+    ]
+  },
+  {
+    title: "السؤال الثالث: ضع علامة صحّ أو خطأ",
+    instruction: "ھەر جۈملىگە توغرا ياكى خاتا بەلگىسىنى قويۇڭ.",
+    kind: "binary",
+    groups: [{
+      rows: `يُستعمل جواز السفر لإثبات هوية المسافر.|پاسپورت يولۇچىنىڭ كىملىكىنى ئىسپاتلاشقا ئىشلىتىلىدۇ.
+يكون الطواف حول جبل عرفات.|تاۋاپ ئەرەفات تېغىنى ئايلىنىپ قىلىنىدۇ.
+الأذن عضو السمع.|قۇلاق ئاڭلاش ئەزاسىدۇر.
+يأتي عيد الفطر بعد شهر رمضان.|روزا ھېيتى رامىزان ئېيىدىن كېيىن كېلىدۇ.
+تُقلع الطائرة من الميناء البحري.|ئايروپىلان دېڭىز پورتىدىن ئۇچىدۇ.
+يشتري المريض الدواء من الصيدلية.|بىمار دورىنى دورىخانىدىن سېتىۋالىدۇ.
+يسعى المعتمر بين الصفا والمروة.|ئۆمرە قىلغۇچى سافا بىلەن مەرۋە ئارىسىدا سەئيى قىلىدۇ.
+عطلة الصيف تكون في فصل الشتاء.|يازلىق تەتىل قىش پەسلىدە بولىدۇ.
+تذكرة الذهاب والإياب تشمل رحلة العودة.|بېرىش-كېلىش بېلىتى قايتىش سەپىرىنىمۇ ئۆز ئىچىگە ئالىدۇ.
+يفحص سائق الحافلة المريض في العيادة.|ئاپتوبۇس شوپۇرى داۋالاش ئورنىدا بىمارنى تەكشۈرىدۇ.`
+    }]
+  },
+  {
+    title: "السؤال الرابع: اختر الإجابة الصحيحة",
+    instruction: "توغرا جاۋابنى تاللاڭ.",
+    kind: "choice",
+    groups: [{
+      rows: `أين ينتظر المسافر رحلته بالطائرة؟|يولۇچى ئايروپىلان سەپىرىنى قەيەردە كۈتىدۇ؟|في المستشفى|في المطار|في الصيدلية
+ما معنى «الأضحية»؟|«الأضحية» دېگەن سۆزنىڭ مەنىسى نېمە؟|تذكرة السفر|عطلة الصيف|قربان العيد
+أكمل: أشعر بألم في أسناني، سأذهب إلى ___.|تولۇقلاڭ: چىشىم ئاغرىۋاتىدۇ، مەن ___ غا بارىمەن.|طبيب الأسنان|مكتب السفر|محطة القطار
+ما الجواب المناسب لسؤال «كم يومًا قضيتَ في العطلة مع أسرتك؟»؟|«تەتىلدە ئائىلىڭىز بىلەن نەچچە كۈن ئۆتكۈزدىڭىز؟» دېگەن سوئالنىڭ مۇۋاپىق جاۋابى قايسى؟|في القرية|سبعة أيام|مع أخي
+ما ضدّ كلمة «الوصول»؟|«يېتىپ كېلىش» سۆزىنىڭ قارىمۇقارشىسى قايسى؟|المغادرة|الانتظار|الحجز
+أين يقف الحجاج في اليوم التاسع من ذي الحجة؟|ھەج قىلغۇچىلار زۇلھەججەنىڭ توققۇزىنچى كۈنى قەيەردە تۇرىدۇ؟|في المطار|في المسجد النبوي|في عرفات
+أيّ كلمة تدلّ على عضو من أعضاء الجسم؟|قايسى سۆز بەدەن ئەزاسىنىڭ نامى؟|العطلة|العين|الحقيبة
+أكمل: في العطلة الماضية ___ جدّتي في القرية.|تولۇقلاڭ: ئالدىنقى تەتىلدە يېزىدىكى مومامنى ___.|سأزور|زُرتُ|سأعود
+ما السؤال المناسب للجواب «الرحلة في الثامنة صباحًا»؟|«سەپەر ئەتىگەن سائەت سەككىزدە» دېگەن جاۋابقا ماس كېلىدىغان سوئال قايسى؟|متى الرحلة؟|أين جواز السفر؟|كم ثمن التذكرة؟
+مَن يفحص المريض في العيادة؟|داۋالاش ئورنىدا بىمارنى كىم تەكشۈرىدۇ؟|المسافر|موظف المطار|الطبيب`
+    }]
+  },
+  {
+    title: "السؤال الخامس: أجب بجمل عربية مفيدة",
+    instruction: "ئەرەبچە تولۇق جۈملە بىلەن جاۋاب بېرىڭ.",
+    kind: "written",
+    groups: [{
+      rows: `ماذا تضع في حقيبة السفر؟ اذكر شيئين.|سەپەر سومكىسىغا نېمىلەرنى سالىسىز؟ ئىككى نەرسىنى ئېيتىڭ.
+أين يؤدّي المسلم العمرة؟|مۇسۇلمان ئۆمرىنى قەيەردە ئادا قىلىدۇ؟
+ماذا تقول للطبيب إذا كان رأسك يؤلمك؟|بېشىڭىز ئاغرىسا، دوختۇرغا نېمە دەيسىز؟
+أين تحبّ أن تقضي عطلة الصيف؟ ولماذا؟|يازلىق تەتىلنى قەيەردە ئۆتكۈزۈشنى ياخشى كۆرىسىز؟ نېمە ئۈچۈن؟
+اكتب سؤالًا تسأل فيه عن ثمن تذكرة السفر.|سەپەر بېلىتىنىڭ باھاسىنى سورايدىغان بىر سوئال يېزىڭ.
+متى يكون عيد الأضحى؟|قۇربان ھېيت قاچان بولىدۇ؟
+ماذا يفعل الطبيب بعد أن يسمع شكوى المريض؟|دوختۇر بىمارنىڭ شىكايىتىنى ئاڭلىغاندىن كېيىن نېمە قىلىدۇ؟
+ماذا فعلتَ في عطلتك الأخيرة؟ اكتب جملة واحدة.|ئاخىرقى تەتىلىڭىزدە نېمە قىلدىڭىز؟ بىر جۈملە يېزىڭ.
+بأيّ وسيلة تفضّل السفر إلى مدينة بعيدة؟|يىراق شەھەرگە قايسى قاتناش ۋاسىتىسى بىلەن بېرىشنى ئەۋزەل كۆرىسىز؟
+ما الفرق بين الطواف والسعي من حيث المكان؟|تاۋاپ بىلەن سەئيى قىلىنىدىغان ئورۇنلارنىڭ قانداق پەرقى بار؟`
+    }]
+  }
+];
+
+const exam = document.querySelector("#exam");
+const number = new Intl.NumberFormat("ar", { numberingSystem: "arab" });
+const answerPrompt = "جاۋابنى بۇ يەرگە يېزىڭ";
+let questionNumber = 0;
+
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function addQuestion(parent, row, kind) {
+  const [arabic, translation, ...choices] = row.split("|");
+  const questionId = "q" + (++questionNumber);
+  const card = element("div", "", "question");
+  card.setAttribute("role", "group");
+  card.setAttribute("aria-labelledby", questionId + "-ar " + questionId + "-ug");
+
+  const prompt = element("p");
+  prompt.id = questionId + "-ar";
+  prompt.append(element("b", number.format(questionNumber) + ". "), arabic);
+
+  const uyghur = element(
+    "p",
+    translation || "«" + arabic + "» نىڭ ئۇيغۇرچە مەنىسىنى يېزىڭ.",
+    "ug"
+  );
+  uyghur.id = questionId + "-ug";
+  uyghur.lang = "ug";
+  card.append(prompt, uyghur);
+
+  if (kind === "binary" || kind === "choice") {
+    const options = element("div", "", kind === "binary" ? "options binary" : "options");
+    const answers = kind === "binary" ? ["صحيح (✓)", "خطأ (✗)"] : choices;
+
+    answers.forEach((answer, index) => {
+      const label = element("label");
+      const input = element("input");
+      input.type = "radio";
+      input.name = questionId;
+      input.value = String(index);
+      const marker = kind === "choice" ? ["أ. ", "ب. ", "ج. "][index] : "";
+      label.append(input, " " + marker + answer);
+      options.append(label);
+    });
+
+    card.append(options);
+  } else {
+    const label = element("label", "", "answer");
+    const hint = element("span", answerPrompt);
+    hint.lang = "ug";
+    const input = element("textarea");
+    input.rows = 1;
+    input.placeholder = answerPrompt;
+    input.setAttribute("aria-describedby", questionId + "-ar");
+    label.append(hint, input);
+    card.append(label);
+  }
+
+  parent.append(card);
+}
+
+sections.forEach(({ title, instruction, kind, groups }) => {
+  const section = element("section");
+  const directions = element("p", instruction + " ھەر سوئال 2 نومۇر.", "ug instruction");
+  directions.lang = "ug";
+  section.append(element("h2", title + " (٢٠ درجة)"), directions);
+
+  groups.forEach(({ passage, rows }) => {
+    if (passage) section.append(element("p", passage, "passage"));
+    rows.split("\n").forEach(row => addQuestion(section, row, kind));
+  });
+
+  exam.append(section);
+});
+
+document.querySelector("#print").addEventListener("click", () => window.print());
+</script>
+</body>
+</html>
